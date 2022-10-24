@@ -3,7 +3,9 @@ function inicialitzaJoc() {
     let inputY = document.getElementById("inputY").valueAsNumber;
     //recorrer hasta que sean los numeros puestos
     let table = document.createElement('table');
-    
+    for(let i = -1; i < imputX; i++){
+
+    }
     /*for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
             if (!(i == 0 && j == 0)) {
