@@ -1,6 +1,7 @@
 //Crea boton evento
 let boton = document.getElementById('inicialitzaJoc');
 //creacion del evento
+
 boton.addEventListener('click', function () {
     const contenedor = document.getElementsByTagName('body')[0]
     //creamos la tabla
@@ -31,16 +32,23 @@ boton.addEventListener('click', function () {
     tabla.setAttribute("border", 1)
 })
 function matriuBinaria(matrix) {
-    var matrix2 = [];
+    let matrix2 = [];
     for (let i = 0; i < matrix.length; i++) {
 
         for (let j = 0; j < matrix[0].length; j++) {
-            if(matrix2[0].style.backgroundColor == "blue"){
+            if (matrix2[0].style.backgroundColor == "blue") {
                 matrix2[i].push(1)
-            }else{
+            } else {
                 matrix2[i].push(0)
             }
         }
     }
     return matrix2;
+}
+
+function inicialitzaMines(){
+    let nMines 
+    let midaX
+    let midaY
+
 }
