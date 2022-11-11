@@ -6,13 +6,13 @@ function pintaTablero() {
         matrix.push(rows[i].children);
         for (let j = 0; j < matrix[i].length; j++) {
             if (mines[i][j] == 1) {
-                matrix[i][j].style.backgroundColor = "red";
+                matrix[i][j].style.backgroundColor = "blue";
             }
         }
     }
 }
 function inicialitzaJoc() {
-    //evitar la repeticion de tableros ya creadas
+    //esto hace que cada vez que creamos un nuevo tamblero en el caso de ya haya uno no lo sobrescribamos
     if (document.getElementsByTagName("table").length != 0) {
         document.getElementsByTagName("table")[0].remove();
     }
@@ -36,9 +36,9 @@ function inicialitzaJoc() {
     }
     tablero.appendChild(tbody);
     contenedor.appendChild(tablero);
-    //estilos
-    tablero.setAttribute("width", "35%");
-    tablero.setAttribute("height", "35%");
+    //estilos para la tabla
+    tablero.setAttribute("width", "50%");
+    tablero.setAttribute("height", "70%");
     tablero.setAttribute("border", 1);
 };
 
@@ -47,7 +47,6 @@ function inicialitzaMines(nMines, midaX, midaY) {
     let mines2 = nMines;
     // Crear Matriz de midaX midaY llenas de 0
     for (let i = 0; i < midaX; i++) {
-        // Crear matriz nueva
         let nueva = [];
         for (let j = 0; j < midaY; j++) {
             // Llenar la matriz nueva de midaX midaY de 0
@@ -57,7 +56,7 @@ function inicialitzaMines(nMines, midaX, midaY) {
         // de midaX y midaY
         mines.push(nueva);
     }
-    // En caso de que haya minas
+    // Verificamos Si hay o no hay minas
     while (mines2 != 0) {
         let a = parseInt(Math.random() * midaX); //aleatirio para x
         let b = parseInt(Math.random() * midaY); //aleatirio para y
@@ -76,7 +75,7 @@ function inicialitza() {
     inicialitzaJoc();
     let x = document.getElementById("inputX").valueAsNumber;
     let y = document.getElementById("inputY").valueAsNumber;
-    let rellenarMinas = document.getElementById("minasC").valueAsNumber;
-    mines = inicialitzaMines(rellenarMinas, x, y);
+    let creacionMinas = document.getElementById("minas").valueAsNumber;
+    mines = inicialitzaMines(creacionMinas, x, y);
     pintaTablero(mines);
 }
