@@ -16,7 +16,7 @@ function inicialitzaJoc() {
     if (document.getElementsByTagName("table").length != 0) {
         document.getElementsByTagName("table")[0].remove();
     }
-    const contenedor = document.getElementsByTagName("body")[0];
+    const contenedorBody = document.getElementsByTagName("body")[0];
     const tablero = document.createElement("table");
     let tbody = document.createElement("tbody");
 
@@ -35,7 +35,7 @@ function inicialitzaJoc() {
         tbody.appendChild(tr);
     }
     tablero.appendChild(tbody);
-    contenedor.appendChild(tablero);
+    contenedorBody.appendChild(tablero);
     //estilos para la tabla
     tablero.setAttribute("width", "50%");
     tablero.setAttribute("height", "70%");
@@ -43,32 +43,26 @@ function inicialitzaJoc() {
 };
 
 function inicialitzaMines(nMines, midaX, midaY) {
-    let mines = [];
-    let mines2 = nMines;
-    // Crear Matriz de midaX midaY llenas de 0
+    let arrayBobas = []; //almacenaremos las nuevas minas
     for (let i = 0; i < midaX; i++) {
-        let nueva = [];
+        let aNueva = [];
         for (let j = 0; j < midaY; j++) {
-            // Llenar la matriz nueva de midaX midaY de 0
-            nueva.push(0);
+            aNueva.push(0); //almacenara la posicion de x e y
         }
-        // Llenar toda la matriz nueva de 0 en la matriz mines y tener las dimension
-        // de midaX y midaY
-        mines.push(nueva);
+        arrayBobas.push(aNueva);
     }
-    // Verificamos Si hay o no hay minas
-    while (mines2 != 0) {
-        let a = parseInt(Math.random() * midaX); //aleatirio para x
-        let b = parseInt(Math.random() * midaY); //aleatirio para y
-        // En caso de que no haya minas (1)
-        if (mines[a][b] != 1) {
-            // Pon 1 a las minas
-            mines[a][b] = 1;
+    // Verificamos si hay o no hay minas
+    while (nMines != 0) {
+        let x = parseInt(Math.random() * midaX); //aleatirio para x
+        let y = parseInt(Math.random() * midaY); //aleatirio para y
+        //Si no hay minas sera 1
+        if (arrayBobas[x][y] != 1) {
+            arrayBobas[x][y] = 1;
         }
-        mines2--;
+        nMines--;
     }
 
-    return mines;
+    return arrayBobas;
 }
 
 function inicialitza() {
