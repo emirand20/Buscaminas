@@ -17,13 +17,14 @@ function inicialitzaJoc() {
         for (let y = 0; y < inputY; y++) {
             //creacion td
             let td = document.createElement("td");
+            td.width = 30;
+            td.id = x + "-" + y;
+            tr.height = 70;
             tr.appendChild(td); 
         }
         tbody.appendChild(tr);
     }
     //estilos para la tabla
-    tablero.setAttribute("width", "20%");
-    tablero.setAttribute("height", "20%");
     tablero.setAttribute("border", 1);
     
     tablero.appendChild(tbody);
@@ -65,9 +66,9 @@ function inicialitzaMines(nMines, midaX, midaY) {
 
     return arrayBobas;
 }
-function coordenadas(){
 
-}
+
+
 function inicialitza() {
     inicialitzaJoc();
     let x = document.getElementById("inputX").valueAsNumber;
@@ -75,4 +76,24 @@ function inicialitza() {
     let creacionMinas = document.getElementById("minas").valueAsNumber;
     mines = inicialitzaMines(creacionMinas, x, y);
     pintaTablero(mines);
+    coordenadesCelas();
+}
+function coordenadesCelas() {
+    //Seleccionem el div on apareixerà la taula
+    const grupTD = document.getElementById("ontaula");
+    //Funció que saltara quan es cliqui una cel·la
+    const celesClicades = e => {
+    //Si la cel·la clicada es vermella...
+    if (e.target.style.backgroundColor == "red") {
+    //Retornara l'id de la cel·la (és a dir, les coordenades) i dira que és una mina
+    console.log(`Les coordenades d'aquesta cel·la són ${e.target.id} i és una mina`);
+    }
+    //Si no ho és...
+    else {
+    //Fara el mateix i ens dirà que no és una mina
+    console.log(`Les coordenades d'aquesta cel·la són ${e.target.id} i NO és una mina`);
+    }
+    }
+    //A la zona del div que hem dit abans, farem que "escolti" quan es faci click, i que corri la funció abans esmentada
+    grupTD.addEventListener("click", celesClicades);
 }
