@@ -21,13 +21,14 @@ function inicialitzaJoc(mines) {
             let td = document.createElement("td");
             td.onclick = clickCoordenada.bind(this,mines,x,y); //
             tr.appendChild(td);
-            
+            td.width = "50";
+            tr.height = "70";
         }
         tbody.appendChild(tr);
     }
     //estilos para la tabla
-    tablero.setAttribute("width", "20%");
-    tablero.setAttribute("height", "20%");
+    // tablero.setAttribute("width", "20%");
+    // tablero.setAttribute("height", "20%");
     tablero.setAttribute("border", 1);
 
     tablero.appendChild(tbody);
@@ -93,6 +94,41 @@ function coordenada() {
             console.log(event.target.id + "no es mina");
         }
     });
+}
+// funcions de la UF1 que calculaven el nombre de veïns
+function countNeighbours(x, y) {
+    let count = 0;
+    for (let i = y - 1; i <= y + 1; i++) { // Y
+        for (let j = x - 1; j <= x + 1; j++) { // X
+            try {
+                if (i==y && j==x) {
+                }
+                else if (matrix[i][j].style.backgroundColor == "red") {
+                    count++;
+                }
+            }
+            catch {
+            }
+        }
+    }
+    return count;
+}
+function minesdelcostat(event) {
+    if (event.target.tagName == "TD") {
+        let inputX = parseInt(event.target.id);
+        let inputY = parseInt(event.target.className);
+
+        for (let i = inputY - 1; i <= inputY + 1; i++) { //  Y
+            for (let j = inputX - 1; j <= inputX + 1; j++) { //  X
+                try {
+                    count = countNeighbours(j, i);
+                    matrix[i][j].innerText = count;
+                }
+                catch {
+                }
+            }
+        }
+    }
 }
 function inicialitza() {
     
