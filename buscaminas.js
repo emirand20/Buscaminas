@@ -1,142 +1,137 @@
 const colorMina = "blue"; //inicializamos el color de la celda
 
 function inicialitzaJoc(mines) {
-    //esto hace que cada vez que creamos un nuevo tamblero en el caso de ya haya uno no lo sobrescribamos
-    if (document.getElementsByTagName("table").length != 0) {
-        document.getElementsByTagName("table")[0].remove();
+  //esto hace que cada vez que creamos un nuevo tamblero en el caso de ya haya uno no lo sobrescribamos
+  if (document.getElementsByTagName("table").length != 0) {
+    document.getElementsByTagName("table")[0].remove();
+  }
+  const contenedorBody = document.getElementsByTagName("div")[0];
+  const tablero = document.createElement("table");
+  let tbody = document.createElement("tbody");
+
+  let inputX = document.getElementById("inputX").valueAsNumber;
+  let inputY = document.getElementById("inputY").valueAsNumber;
+
+  //creacion
+  for (let x = 0; x < inputX; x++) {
+    //creacion tr
+    let tr = document.createElement("tr");
+    for (let y = 0; y < inputY; y++) {
+      //creacion td
+      let td = document.createElement("td");
+      td.onclick = clickCoordenada.bind(this, mines, x, y); //
+      tr.appendChild(td);
+      td.width = "50";
+      tr.height = "70";
     }
-    const contenedorBody = document.getElementsByTagName("div")[0];
-    const tablero = document.createElement("table");
-    let tbody = document.createElement("tbody");
+    tbody.appendChild(tr);
+  }
+  //estilos para la tabla
+  // tablero.setAttribute("width", "20%");
+  // tablero.setAttribute("height", "20%");
+  tablero.setAttribute("border", 1);
 
-    let inputX = document.getElementById("inputX").valueAsNumber;
-    let inputY = document.getElementById("inputY").valueAsNumber;
-
-    //creacion
-    for (let x = 0; x < inputX; x++) {
-        //creacion tr 
-        let tr = document.createElement("tr");
-        for (let y = 0; y < inputY; y++) {
-            //creacion td
-            let td = document.createElement("td");
-            td.onclick = clickCoordenada.bind(this,mines,x,y); //
-            tr.appendChild(td);
-            td.width = "50";
-            tr.height = "70";
-        }
-        tbody.appendChild(tr);
-    }
-    //estilos para la tabla
-    // tablero.setAttribute("width", "20%");
-    // tablero.setAttribute("height", "20%");
-    tablero.setAttribute("border", 1);
-
-    tablero.appendChild(tbody);
-    contenedorBody.appendChild(tablero);
-};
-
-function clickCoordenada(mines,x,y) {
-    imprimeixCoordenada(x,y)
-    imprimeixMina(mines,x,y)
-    
-}
-function imprimeixCoordenada(x,y) {
-    console.log(x,y);
+  tablero.appendChild(tbody);
+  contenedorBody.appendChild(tablero);
 }
 
-function imprimeixMina(mines,x,y) {
-    // mines[x][y]
-    //
+function clickCoordenada(mines, x, y) {
+  imprimeixCoordenada(x, y);
+  imprimeixMina(mines, x, y);
+}
+function imprimeixCoordenada(x, y) {
+  console.log(x, y);
+}
+
+function imprimeixMina(mines, x, y) {
+  // mines[x][y]
+  //
 }
 
 function pintaTablero() {
-    let rows = document.getElementsByTagName("tbody")[0].children;
-    let matrix = [];
+  let rows = document.getElementsByTagName("tbody")[0].children;
+  let matrix = [];
 
-    for (let i = 0; i < rows.length; i++) {
-        matrix.push(rows[i].children);
-        for (let j = 0; j < matrix[i].length; j++) {
-            if (mines[i][j] == 1) {
-                matrix[i][j].style.backgroundColor = "blue";
-            }
-        }
+  for (let i = 0; i < rows.length; i++) {
+    matrix.push(rows[i].children);
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (mines[i][j] == 1) {
+        matrix[i][j].style.backgroundColor = "blue";
+      }
     }
+  }
 }
 
 function inicialitzaMines(nMines, midaX, midaY) {
-    let arrayBobas = []; //almacenaremos las nuevas minas
-    for (let i = 0; i < midaX; i++) {
-        let aNueva = [];
-        for (let j = 0; j < midaY; j++) {
-            aNueva.push(0); //almacenara la posicion de x e y
-        }
-        arrayBobas.push(aNueva);
+  let arrayBobas = []; //almacenaremos las nuevas minas
+  for (let i = 0; i < midaX; i++) {
+    let aNueva = [];
+    for (let j = 0; j < midaY; j++) {
+      aNueva.push(0); //almacenara la posicion de x e y
     }
-    // Verificamos si hay o no hay minas
-    while (nMines != 0) {
-        let x = parseInt(Math.random() * midaX); //aleatirio para x
-        let y = parseInt(Math.random() * midaY); //aleatirio para y
-        //Si no hay minas sera 1
-        if (arrayBobas[x][y] != 1) {
-            arrayBobas[x][y] = 1;
-        }
-        nMines--;
+    arrayBobas.push(aNueva);
+  }
+  // Verificamos si hay o no hay minas
+  while (nMines != 0) {
+    let x = parseInt(Math.random() * midaX); //aleatirio para x
+    let y = parseInt(Math.random() * midaY); //aleatirio para y
+    //Si no hay minas sera 1
+    if (arrayBobas[x][y] != 1) {
+      arrayBobas[x][y] = 1;
     }
+    nMines--;
+  }
 
-    return arrayBobas;
+  return arrayBobas;
 }
 function coordenada() {
-    let celda = document.getElementsByTagName("table")[0];
-    celda.addEventListener("click", function (event) {
-        if (event.target.style.backgroundColor == colorMina) {
-            console.log(event.target.id + "es mina");
-        } else {
-            console.log(event.target.id + "no es mina");
-        }
-    });
-}
-// funcions de la UF1 que calculaven el nombre de veïns
-function countNeighbours(x, y) {
-    let count = 0;
-    for (let i = y - 1; i <= y + 1; i++) { // Y
-        for (let j = x - 1; j <= x + 1; j++) { // X
-            try {
-                if (i==y && j==x) {
-                }
-                else if (matrix[i][j].style.backgroundColor == "red") {
-                    count++;
-                }
-            }
-            catch {
-            }
-        }
+  let celda = document.getElementsByTagName("table")[0];
+  celda.addEventListener("click", function (event) {
+    if (event.target.style.backgroundColor == colorMina) {
+      console.log(event.target.id + "es mina");
+    } else {
+      console.log(event.target.id + "no es mina");
     }
-    return count;
+  });
+}
+
+function countNeighbours(x, y) {
+  let count = 0;
+  for (let i = y - 1; i <= y + 1; i++) {
+    for (let j = x - 1; j <= x + 1; j++) {
+      try {
+        if (i == y && j == x) {
+        } else if (matrix[i][j].style.backgroundColor == "red") {
+          count++;
+        }
+      } catch {}
+    }
+  }
+  return count;
 }
 function minesdelcostat(event) {
-    if (event.target.tagName == "TD") {
-        let inputX = parseInt(event.target.id);
-        let inputY = parseInt(event.target.className);
+  if (event.target.tagName == "td") {
+    let inputX = parseInt(event.target.id);
+    let inputY = parseInt(event.target.className);
 
-        for (let i = inputY - 1; i <= inputY + 1; i++) { //  Y
-            for (let j = inputX - 1; j <= inputX + 1; j++) { //  X
-                try {
-                    count = countNeighbours(j, i);
-                    matrix[i][j].innerText = count;
-                }
-                catch {
-                }
-            }
-        }
+    for (let i = inputY - 1; i <= inputY + 1; i++) {
+  
+      for (let j = inputX - 1; j <= inputX + 1; j++) {
+
+        try {
+          count = countNeighbours(j, i);
+          matrix[i][j].innerText = count;
+        } catch {}
+      }
     }
+  }
 }
 function inicialitza() {
-    
-    let x = document.getElementById("inputX").valueAsNumber;
-    let y = document.getElementById("inputY").valueAsNumber;
-    let creacionMinas = document.getElementById("minas").valueAsNumber;
-    mines = inicialitzaMines(creacionMinas, x, y);
-    inicialitzaJoc(mines);
-    pintaTablero(mines);
-    coordenada();
+  let x = document.getElementById("inputX").valueAsNumber;
+  let y = document.getElementById("inputY").valueAsNumber;
+  let creacionMinas = document.getElementById("minas").valueAsNumber;
+  mines = inicialitzaMines(creacionMinas, x, y);
+  inicialitzaJoc(mines);
+  pintaTablero(mines);
+  coordenada();
 }
