@@ -1,22 +1,11 @@
-function pintaTablero() {
-    let rows = document.getElementsByTagName("tbody")[0].children;
-    let matrix = [];
+const colorMina = "blue"; //inicializamos el color de la celda
 
-    for (let i = 0; i < rows.length; i++) {
-        matrix.push(rows[i].children);
-        for (let j = 0; j < matrix[i].length; j++) {
-            if (mines[i][j] == 1) {
-                matrix[i][j].style.backgroundColor = "blue";
-            }
-        }
-    }
-}
-function inicialitzaJoc() {
+function inicialitzaJoc(mines) {
     //esto hace que cada vez que creamos un nuevo tamblero en el caso de ya haya uno no lo sobrescribamos
     if (document.getElementsByTagName("table").length != 0) {
         document.getElementsByTagName("table")[0].remove();
     }
-    const contenedorBody = document.getElementsByTagName("body")[0];
+    const contenedorBody = document.getElementsByTagName("div")[0];
     const tablero = document.createElement("table");
     let tbody = document.createElement("tbody");
 
@@ -30,17 +19,48 @@ function inicialitzaJoc() {
         for (let y = 0; y < inputY; y++) {
             //creacion td
             let td = document.createElement("td");
+            td.onclick = clickCoordenada.bind(this,mines,x,y); //
             tr.appendChild(td);
+            
         }
         tbody.appendChild(tr);
     }
+    //estilos para la tabla
+    tablero.setAttribute("width", "20%");
+    tablero.setAttribute("height", "20%");
+    tablero.setAttribute("border", 1);
+
     tablero.appendChild(tbody);
     contenedorBody.appendChild(tablero);
-    //estilos para la tabla
-    tablero.setAttribute("width", "50%");
-    tablero.setAttribute("height", "70%");
-    tablero.setAttribute("border", 1);
 };
+
+function clickCoordenada(mines,x,y) {
+    imprimeixCoordenada(x,y)
+    imprimeixMina(mines,x,y)
+    
+}
+function imprimeixCoordenada(x,y) {
+    console.log(x,y);
+}
+
+function imprimeixMina(mines,x,y) {
+    // mines[x][y]
+    //
+}
+
+function pintaTablero() {
+    let rows = document.getElementsByTagName("tbody")[0].children;
+    let matrix = [];
+
+    for (let i = 0; i < rows.length; i++) {
+        matrix.push(rows[i].children);
+        for (let j = 0; j < matrix[i].length; j++) {
+            if (mines[i][j] == 1) {
+                matrix[i][j].style.backgroundColor = "blue";
+            }
+        }
+    }
+}
 
 function inicialitzaMines(nMines, midaX, midaY) {
     let arrayBobas = []; //almacenaremos las nuevas minas
@@ -64,12 +84,23 @@ function inicialitzaMines(nMines, midaX, midaY) {
 
     return arrayBobas;
 }
-
+function coordenada() {
+    let celda = document.getElementsByTagName("table")[0];
+    celda.addEventListener("click", function (event) {
+        if (event.target.style.backgroundColor == colorMina) {
+            console.log(event.target.id + "es mina");
+        } else {
+            console.log(event.target.id + "no es mina");
+        }
+    });
+}
 function inicialitza() {
-    inicialitzaJoc();
+    
     let x = document.getElementById("inputX").valueAsNumber;
     let y = document.getElementById("inputY").valueAsNumber;
     let creacionMinas = document.getElementById("minas").valueAsNumber;
     mines = inicialitzaMines(creacionMinas, x, y);
+    inicialitzaJoc(mines);
     pintaTablero(mines);
+    coordenada();
 }
